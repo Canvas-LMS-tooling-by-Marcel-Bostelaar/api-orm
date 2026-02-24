@@ -35,7 +35,7 @@ class OutcomeResultProvider extends AbstractProvider implements OutcomeResultPro
     ) {
         parent::__construct( $canvasCommunicator,
         (new ModelPopulationConfigBuilder(OutcomeResult::class))
-        ->keyCopy("score")
+        ->keyCopy("score")->nullable()
         ->keyCopy("submitted_or_assessed_at")->asDateTime()
         ->from("links")
             ->processAnyValue(fn($x) => (int)$x["learning_outcome"])
