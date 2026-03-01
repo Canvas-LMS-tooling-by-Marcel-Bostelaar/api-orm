@@ -12,6 +12,7 @@ use CanvasApiLibrary\Core\Models\IdentityTraits\Atomic\NumberIdentityTrait;
 //TODO FIX
 trait DummyNumberIdentityTrait{
     use IdentityBoiletplateTrait;
+    use DomainIdentityTrait;
 
     public ?int $id{
         get{
@@ -27,6 +28,7 @@ trait DummyNumberIdentityTrait{
     }
 
     protected function initIdentityTraits(){
+        $this->initializeDomainIdentity();
     }
 
     public function isRegularModel() : bool{
