@@ -47,17 +47,17 @@ use CanvasApiLibrary\Core\Models\UserStub;
  * @template TNotFoundResult2 Returned type of value that a not found result will emit
  * @template TErrorResult Wrapped type of value that any other error result will emit
  * @template TErrorResult2 Returned type of value that any other error result will emit
- * @implements AssignmentProviderInterface<TSuccessResult2,TErrorResult2,TNotFoundResult2,TUnauthorizedResult2>
+ * @implements OutcomeResultRollupProviderInterface<TSuccessResult2,TErrorResult2,TNotFoundResult2,TUnauthorizedResult2>
  */
-class AssignmentProviderWrapper implements AssignmentProviderInterface {
+class OutcomeResultRollupProviderWrapper implements OutcomeResultRollupProviderInterface {
 
     /**
      * Summary of __construct
-     * @param AssignmentProviderInterface<TSuccessResult,TErrorResult,TNotFoundResult,TUnauthorizedResult> $innerProvider
+     * @param OutcomeResultRollupProviderInterface<TSuccessResult,TErrorResult,TNotFoundResult,TUnauthorizedResult> $innerProvider
      * @param Closure(TSuccessResult|TErrorResult|TNotFoundResult|TUnauthorizedResult) : (TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2) $resultProcessor
      */
     public function __construct(
-        private AssignmentProviderInterface $innerProvider,
+        private OutcomeResultRollupProviderInterface $innerProvider,
         private Closure $resultProcessor){
     }
 
@@ -72,11 +72,11 @@ class AssignmentProviderWrapper implements AssignmentProviderInterface {
      * @template newNotFoundT
      * @template newErrorT
      * @param Closure(TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2) : (newSuccessT|newErrorT|newNotFoundT|newUnauthorizedT) $processor
-     * @return AssignmentProviderInterface<newSuccessT,newErrorT,newNotFoundT,newUnauthorizedT>
+     * @return OutcomeResultRollupProviderInterface<newSuccessT,newErrorT,newNotFoundT,newUnauthorizedT>
      */
-    public function handleResults(Closure $processor): AssignmentProviderInterface {
+    public function handleResults(Closure $processor): OutcomeResultRollupProviderInterface {
         $previousProcessor = $this->resultProcessor ?? fn($x) => $x;
-        return new AssignmentProviderWrapper( $this->innerProvider, fn($x) => $processor($previousProcessor($x)));
+        return new OutcomeResultRollupProviderWrapper( $this->innerProvider, fn($x) => $processor($previousProcessor($x)));
     }
 
     public function HandleEmitted(mixed $data, array $context): void {
@@ -84,26 +84,28 @@ class AssignmentProviderWrapper implements AssignmentProviderInterface {
     }
 
     /**
-	 * @param AssignmentStub[] $assignments
+	 * @param CourseStub[] $courses
+	 * @param array $users
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2
      * @phpstan-ignore return.unresolvableType
     */
-    public function populateAssignments(array $assignments, bool $skipCache = false, bool $doNotCache = false) : mixed{
-        $value = $this->innerProvider->populateAssignments($assignments, $skipCache, $doNotCache);
+    public function getOutcomeResultRollupsInCourses(array $courses, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed{
+        $value = $this->innerProvider->getOutcomeResultRollupsInCourses($courses, $users, $skipCache, $doNotCache);
         return ($this->resultProcessor)($value);
     }
 
     /**
-	 * @param AssignmentStub $assignment
+	 * @param CourseStub $course
+	 * @param array $users
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2
      * @phpstan-ignore return.unresolvableType
     */
-    public function populateAssignment(AssignmentStub $assignment, bool $skipCache = false, bool $doNotCache = false) : mixed{
-        $value = $this->innerProvider->populateAssignment($assignment, $skipCache, $doNotCache);
+    public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed{
+        $value = $this->innerProvider->getOutcomeResultRollupsInCourse($course, $users, $skipCache, $doNotCache);
         return ($this->resultProcessor)($value);
     }
 

@@ -22,6 +22,8 @@ use CanvasApiLibrary\Core\Models\GroupCategoryStub;
 use CanvasApiLibrary\Core\Models\GroupStub;
 use CanvasApiLibrary\Core\Models\Outcome;
 use CanvasApiLibrary\Core\Models\OutcomeResult;
+use CanvasApiLibrary\Core\Models\OutcomeResultRollup;
+use CanvasApiLibrary\Core\Models\OutcomeResultRollupStub;
 use CanvasApiLibrary\Core\Models\OutcomeResultStub;
 use CanvasApiLibrary\Core\Models\OutcomeStub;
 use CanvasApiLibrary\Core\Models\Outcomegroup;

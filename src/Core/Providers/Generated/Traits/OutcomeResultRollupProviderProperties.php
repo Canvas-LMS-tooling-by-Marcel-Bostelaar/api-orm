@@ -38,43 +38,22 @@ use CanvasApiLibrary\Core\Models\User;
 use CanvasApiLibrary\Core\Models\UserDisplay;
 use CanvasApiLibrary\Core\Models\UserStub;
 
-trait OutcomeProviderProperties{
+trait OutcomeResultRollupProviderProperties{
     
     
-    abstract public function populateOutcome(OutcomeStub $outcome, bool $skipCache = false, bool $doNotCache = false) : ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult;
-    abstract public function getOutcomesInOutcomegroup(OutcomegroupStub $outcomeGroup, bool $skipCache = false, bool $doNotCache = false) : ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult;
+    abstract public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users, bool $skipCache = false, bool $doNotCache = false) : ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult;
     /**
-     * Summary of populateOutcomes
- 
-     * This is a plural version of populateOutcome
- 
-	 * @param OutcomeStub[] $outcomes
-	 * @param bool $skipCache
-	 * @param bool $doNotCache
-	 * @return ErrorResult|NotFoundResult|SuccessResult<Outcome[]>|UnauthorizedResult
-     */
-    public function populateOutcomes(array $outcomes, bool $skipCache = false, bool $doNotCache = false): ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult {
-        $results = [];
-        foreach($outcomes as $item){
-            $result = $this->populateOutcome($item, $skipCache,  $doNotCache);
-            if(!$result instanceof SuccessResult){
-                return $result;
-            }
-            $results[] = $result->value;
-        }
-        return new SuccessResult($results);
-    }
-        /**
-     * Summary of getOutcomesInOutcomegroups 
-     * This is a plural version of getOutcomesInOutcomegroup 
-      * @param OutcomegroupStub[] $outcomegroups
+     * Summary of getOutcomeResultRollupsInCourses 
+     * This is a plural version of getOutcomeResultRollupsInCourse 
+      * @param CourseStub[] $courses
+ * @param array $users
  * @param bool $skipCache
  * @param bool $doNotCache
- * @return ErrorResult|NotFoundResult|SuccessResult<Lookup<OutcomegroupStub, Outcome>>|UnauthorizedResult     */
-    public function getOutcomesInOutcomegroups(array $outcomegroups, bool $skipCache = false, bool $doNotCache = false): SuccessResult|ErrorResult|NotFoundResult|UnauthorizedResult {
+ * @return ErrorResult|NotFoundResult|SuccessResult<Lookup<CourseStub, OutcomeResultRollup>>|UnauthorizedResult     */
+    public function getOutcomeResultRollupsInCourses(array $courses, array $users, bool $skipCache = false, bool $doNotCache = false): SuccessResult|ErrorResult|NotFoundResult|UnauthorizedResult {
         $lookup = new Lookup();
-        foreach($outcomegroups as $x){
-            $result = $this->getOutcomesInOutcomegroup($x, $skipCache, $doNotCache);
+        foreach($courses as $x){
+            $result = $this->getOutcomeResultRollupsInCourse($x, $users, $skipCache, $doNotCache);
             if(!$result instanceof SuccessResult){
                 return $result;
             }
