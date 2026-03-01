@@ -41,9 +41,7 @@ class OutcomeResultRollupProvider extends AbstractProvider implements OutcomeRes
             ->processAnyValue(fn($x) => (int)$x["outcome"])
             ->to("learning_outcome")
             ->asModel(OutcomeStub::class)
-        ->from("links")
-            ->processAnyValue(fn($x) => $x["submitted_at"])
-            ->to("submitted_at")
+        ->keyCopy("submitted_at")
             ->asDateTime()
         ,$clientIDProvider
         );
@@ -63,7 +61,7 @@ class OutcomeResultRollupProvider extends AbstractProvider implements OutcomeRes
         return $this->GetMany(
             "courses/{$course->id}/outcome_rollups" . (empty($params) ? "" : "?" . $params),
             $course->getContext(),
-            $this->modelPopulator->staticFrom($userId)->to("user")->asModel(UserStub::class),
+            $this->modelPopulator->staticFrom((int)$userId)->to("user")->asModel(UserStub::class),
             fn($x) => $x["rollups"][0]["scores"]
         );
     }
