@@ -2,11 +2,11 @@
 
 namespace CanvasApiLibrary\Core\Models;
 use CanvasApiLibrary\Core\Models\Generated\OutcomeResultRollupStubProperties;
-use CanvasApiLibrary\Core\Models\IdentityTraits\DomainBoundIdTrait;
+use CanvasApiLibrary\Core\Models\IdentityTraits\DummyNumberIdentityTrait;
 use CanvasApiLibrary\Core\Models\Utility\AbstractCanvasPopulatedModel;
 
 class OutcomeResultRollupStub extends AbstractCanvasPopulatedModel{
-    use DomainBoundIdTrait;
+    use DummyNumberIdentityTrait;
     use OutcomeResultRollupStubProperties;
     protected static array $properties = [
         [UserStub::class, "user"],
