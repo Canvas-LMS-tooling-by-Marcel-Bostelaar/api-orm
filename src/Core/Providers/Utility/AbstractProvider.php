@@ -87,7 +87,7 @@ abstract class AbstractProvider implements HandleEmittedInterface{
                 CanvasReturnStatus::SUCCESS => new SuccessResult($builder->buildMany($data, ...$context)),
                 CanvasReturnStatus::UNAUTHORIZED => new UnauthorizedResult(),
                 CanvasReturnStatus::NOT_FOUND => new NotFoundResult(),
-                default => new ErrorResult(),
+                default => new ErrorResult([json_encode($data)]),
             };
        } 
          catch(Exception $ex){
@@ -110,7 +110,7 @@ abstract class AbstractProvider implements HandleEmittedInterface{
                 CanvasReturnStatus::SUCCESS => new SuccessResult($builder->build($data, ...$context)),
                 CanvasReturnStatus::UNAUTHORIZED => new UnauthorizedResult(),
                 CanvasReturnStatus::NOT_FOUND => new NotFoundResult(),
-                default => new ErrorResult(),
+                default => new ErrorResult([json_encode($data)]),
             };
         } catch(Exception $ex){
             return new ErrorResult([$ex->getMessage() . " " . $ex->getTraceAsString()]);
