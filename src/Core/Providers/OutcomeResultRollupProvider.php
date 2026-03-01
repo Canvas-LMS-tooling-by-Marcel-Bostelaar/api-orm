@@ -41,10 +41,10 @@ class OutcomeResultRollupProvider extends AbstractProvider implements OutcomeRes
             ->processAnyValue(fn($x) => (int)$x["outcome"])
             ->to("learning_outcome")
             ->asModel(OutcomeStub::class)
-        ->from("links") //TODO fix
-            ->processAnyValue(fn($x) => (int)$x["user"])
-            ->to("user")
-            ->asModel(UserStub::class)
+        ->from("links")
+            ->processAnyValue(fn($x) => $x["submitted_at"])
+            ->to("submitted_at")
+            ->asDateTime()
         ,$clientIDProvider
         );
     }
@@ -52,20 +52,19 @@ class OutcomeResultRollupProvider extends AbstractProvider implements OutcomeRes
     /**
      * Gets the total outcomes in a course. Can be filtered to specific users.
      * @param CourseStub $course
-     * @param UserStub[] $users
+     * @param string $userId
      * @param bool $skipCache
      * @param bool $doNotCache
      * @return ErrorResult|NotFoundResult|SuccessResult<OutcomeResultRollup[]>|UnauthorizedResult
      */
-    public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users = [], bool $skipCache = false, bool $doNotCache = false): ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult {
+    public function getOutcomeResultRollupsInCourse(CourseStub $course, string $userId, bool $skipCache = false, bool $doNotCache = false): ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult {
         $params = "";
-        $userIDs = array_map(fn($user) => "user_ids[]=" . $user->getId(), $users);
-        $params .= implode("&", $userIDs);
+        $params .= "user_ids[]=" . $userId;
         return $this->GetMany(
             "courses/{$course->id}/outcome_rollups" . (empty($params) ? "" : "?" . $params),
             $course->getContext(),
-            null,
-            fn($x) => $x["outcome_result_rollups"]
+            $this->modelPopulator->staticFrom($userId)->to("user")->asModel(UserStub::class),
+            fn($x) => $x["rollups"][0]["scores"]
         );
     }
 }

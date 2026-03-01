@@ -56,22 +56,22 @@ interface OutcomeResultRollupProviderInterface extends HandleEmittedInterface{
     public function handleResults(Closure $processor): OutcomeResultRollupProviderInterface;
     /**
 	 * @param CourseStub[] $courses
-	 * @param array $users
+	 * @param string $userId
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TErrorResult|TNotFoundResult|TSuccessResult<Lookup<CourseStub, OutcomeResultRollup>>|TUnauthorizedResult
      * @phpstan-ignore return.unresolvableType
     */
-    public function getOutcomeResultRollupsInCourses(array $courses, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed;
+    public function getOutcomeResultRollupsInCourses(array $courses, string $userId, bool $skipCache = false, bool $doNotCache = false) : mixed;
 
     /**
 	 * @param CourseStub $course
-	 * @param array $users
+	 * @param string $userId
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TErrorResult|TNotFoundResult|TSuccessResult<OutcomeResultRollup[]>|TUnauthorizedResult
      * @phpstan-ignore return.unresolvableType
     */
-    public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed;
+    public function getOutcomeResultRollupsInCourse(CourseStub $course, string $userId, bool $skipCache = false, bool $doNotCache = false) : mixed;
 
 }

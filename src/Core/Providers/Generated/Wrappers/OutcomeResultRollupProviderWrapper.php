@@ -85,27 +85,27 @@ class OutcomeResultRollupProviderWrapper implements OutcomeResultRollupProviderI
 
     /**
 	 * @param CourseStub[] $courses
-	 * @param array $users
+	 * @param string $userId
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2
      * @phpstan-ignore return.unresolvableType
     */
-    public function getOutcomeResultRollupsInCourses(array $courses, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed{
-        $value = $this->innerProvider->getOutcomeResultRollupsInCourses($courses, $users, $skipCache, $doNotCache);
+    public function getOutcomeResultRollupsInCourses(array $courses, string $userId, bool $skipCache = false, bool $doNotCache = false) : mixed{
+        $value = $this->innerProvider->getOutcomeResultRollupsInCourses($courses, $userId, $skipCache, $doNotCache);
         return ($this->resultProcessor)($value);
     }
 
     /**
 	 * @param CourseStub $course
-	 * @param array $users
+	 * @param string $userId
 	 * @param bool $skipCache
 	 * @param bool $doNotCache
 	 * @return TSuccessResult2|TErrorResult2|TNotFoundResult2|TUnauthorizedResult2
      * @phpstan-ignore return.unresolvableType
     */
-    public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users, bool $skipCache = false, bool $doNotCache = false) : mixed{
-        $value = $this->innerProvider->getOutcomeResultRollupsInCourse($course, $users, $skipCache, $doNotCache);
+    public function getOutcomeResultRollupsInCourse(CourseStub $course, string $userId, bool $skipCache = false, bool $doNotCache = false) : mixed{
+        $value = $this->innerProvider->getOutcomeResultRollupsInCourse($course, $userId, $skipCache, $doNotCache);
         return ($this->resultProcessor)($value);
     }
 

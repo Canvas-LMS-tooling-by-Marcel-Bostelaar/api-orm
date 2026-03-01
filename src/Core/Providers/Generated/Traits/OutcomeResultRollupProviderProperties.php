@@ -41,19 +41,19 @@ use CanvasApiLibrary\Core\Models\UserStub;
 trait OutcomeResultRollupProviderProperties{
     
     
-    abstract public function getOutcomeResultRollupsInCourse(CourseStub $course, array $users, bool $skipCache = false, bool $doNotCache = false) : ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult;
+    abstract public function getOutcomeResultRollupsInCourse(CourseStub $course, string $userId, bool $skipCache = false, bool $doNotCache = false) : ErrorResult|NotFoundResult|SuccessResult|UnauthorizedResult;
     /**
      * Summary of getOutcomeResultRollupsInCourses 
      * This is a plural version of getOutcomeResultRollupsInCourse 
       * @param CourseStub[] $courses
- * @param array $users
+ * @param string $userId
  * @param bool $skipCache
  * @param bool $doNotCache
  * @return ErrorResult|NotFoundResult|SuccessResult<Lookup<CourseStub, OutcomeResultRollup>>|UnauthorizedResult     */
-    public function getOutcomeResultRollupsInCourses(array $courses, array $users, bool $skipCache = false, bool $doNotCache = false): SuccessResult|ErrorResult|NotFoundResult|UnauthorizedResult {
+    public function getOutcomeResultRollupsInCourses(array $courses, string $userId, bool $skipCache = false, bool $doNotCache = false): SuccessResult|ErrorResult|NotFoundResult|UnauthorizedResult {
         $lookup = new Lookup();
         foreach($courses as $x){
-            $result = $this->getOutcomeResultRollupsInCourse($x, $users, $skipCache, $doNotCache);
+            $result = $this->getOutcomeResultRollupsInCourse($x, $userId, $skipCache, $doNotCache);
             if(!$result instanceof SuccessResult){
                 return $result;
             }
